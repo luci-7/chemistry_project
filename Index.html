@@ -1,0 +1,269 @@
+import React, { useState, useEffect } from 'react';
+
+// Define the content for each slide
+const slides = [
+  {
+    title: 'Reaction Rates & Catalysts',
+    subtitle: 'Understanding the Speed of Chemical Change',
+    content: [
+      { type: 'text', value: 'Nile International College' },
+      { type: 'text', value: 'Grade 11 Chemistry' },
+      { type: 'text', value: 'Trimester 3 Performance Task' },
+        { type: 'text', value: 'Created by: Eyad Mohamed, Yassin Mahmoud, Ahmed Essam' },
+
+    ],
+  },
+  {
+    title: 'Introduction to Reaction Rates',
+    subtitle: 'How fast do chemical reactions occur?',
+    content: [
+      { type: 'heading', value: 'What is a Reaction Rate?' },
+      { type: 'text', value: 'The speed at which reactants are converted into products in a chemical reaction.' },
+      { type: 'heading', value: 'Chemical Kinetics' },
+      { type: 'text', value: 'The branch of chemistry that studies the rates of chemical reactions and the factors that influence them.' },
+      { type: 'heading', value: 'Why is it important?' },
+      { type: 'list', items: [
+        'Optimizing industrial processes (e.g., manufacturing, food production).',
+        'Understanding biological systems (e.g., enzyme function in digestion).',
+        'Explaining everyday phenomena (e.g., rusting, cooking).',
+      ]},
+    ],
+  },
+  {
+    title: 'Collision Theory',
+    subtitle: 'The fundamental principle behind reaction rates',
+    content: [
+      { type: 'text', value: 'For a chemical reaction to occur, reactant particles must collide with each other.' },
+      { type: 'heading', value: 'Successful Collisions' },
+      { type: 'text', value: 'Not all collisions lead to a reaction. Only "successful" collisions result in product formation. A successful collision requires:' },
+      { type: 'list', items: [
+        'Sufficient Energy: Particles must collide with energy equal to or greater than the activation energy (E_a).',
+        'Correct Orientation: Particles must collide in the correct spatial alignment for bonds to break and form.',
+      ]},
+    ],
+  },
+  {
+    title: 'Factors Affecting Reaction Rates: Temperature',
+    subtitle: 'Heating things up!',
+    content: [
+      { type: 'heading', value: 'Effect' },
+      { type: 'text', value: 'Increasing the temperature generally increases the reaction rate.' },
+      { type: 'heading', value: 'Explanation' },
+      { type: 'list', items: [
+        'Increased Kinetic Energy: Higher temperatures provide particles with more kinetic energy, causing them to move faster.',
+        'More Frequent Collisions: Faster-moving particles collide more often.',
+        'Higher Proportion of Successful Collisions: A larger fraction of particles will possess energy greater than or equal to the activation energy (E_a), leading to more successful collisions.',
+      ]},
+    ],
+  },
+  {
+    title: 'Factors Affecting Reaction Rates: Concentration & Pressure',
+    subtitle: 'More particles, more reactions!',
+    content: [
+      { type: 'heading', value: 'Effect (Concentration - Solutions)' },
+      { type: 'text', value: 'Increasing the concentration of reactants in a solution increases the reaction rate.' },
+      { type: 'heading', value: 'Effect (Pressure - Gases)' },
+      { type: 'text', value: 'Increasing the pressure of gaseous reactants increases the reaction rate.' },
+      { type: 'heading', value: 'Explanation' },
+      { type: 'text', value: 'In both cases, increasing concentration or pressure means there are more reactant particles packed into a given volume. This leads to:' },
+      { type: 'list', items: [
+        'More Frequent Collisions: Particles are closer together, increasing the likelihood of collisions.',
+      ]},
+    ],
+  },
+  {
+    title: 'Factors Affecting Reaction Rates: Surface Area',
+    subtitle: 'Exposing more to react!',
+    content: [
+      { type: 'heading', value: 'Effect' },
+      { type: 'text', value: 'Increasing the surface area of solid reactants increases the reaction rate.' },
+      { type: 'heading', value: 'Explanation' },
+      { type: 'text', value: 'When a solid reacts, only the particles on its surface are exposed and available to collide with other reactants. Increasing the surface area (e.g., by crushing a solid into a powder) means:' },
+      { type: 'list', items: [
+        'More Exposed Particles: A greater number of reactant particles are available for collision.',
+        'More Frequent Collisions: This leads to a higher rate of successful collisions.',
+      ]},
+      { type: 'text', value: 'Example: Powdered sugar dissolves faster in water than a sugar cube of the same mass because it has a larger surface area.' },
+    ],
+  },
+  {
+    title: 'Introduction to Catalysts',
+    subtitle: 'The reaction accelerators!',
+    content: [
+      { type: 'heading', value: 'What is a Catalyst?' },
+      { type: 'text', value: 'A substance that increases the rate of a chemical reaction without being consumed in the process. It can be recovered chemically unchanged at the end of the reaction.' },
+      { type: 'heading', value: 'How do they work?' },
+      { type: 'text', value: 'Catalysts provide an alternative reaction pathway that has a lower activation energy (E_a) than the uncatalyzed reaction.' },
+      { type: 'heading', value: 'Key Properties' },
+      { type: 'list', items: [
+        'Not consumed: They participate in the reaction but are regenerated.',
+        'Specific: Many catalysts are highly specific, only accelerating certain reactions.',
+        'Do not change equilibrium: They speed up both forward and reverse reactions equally, so the position of equilibrium remains unchanged.',
+      ]},
+    ],
+  },
+  {
+    title: 'How Catalysts Work',
+    subtitle: 'Lowering the energy barrier',
+    content: [
+      { type: 'text', value: 'Imagine a reaction needing to climb a hill (activation energy) to proceed. A catalyst is like building a tunnel through the hill, making it easier and faster for molecules to get to the other side.' },
+      { type: 'list', items: [
+        'Lower Activation Energy (E_a): By providing a new reaction mechanism, the catalyst reduces the minimum energy required for a successful collision.',
+        'Increased Successful Collisions: With a lower E_a, a greater proportion of reactant particles will have the necessary energy to react, even at the same temperature.',
+      ]},
+      { type: 'text', value: 'This results in a significant increase in the reaction rate.' },
+    ],
+  },
+  {
+    title: 'Types of Catalysis',
+    subtitle: 'Different phases, different mechanisms',
+    content: [
+      { type: 'heading', value: 'Homogeneous Catalysis' },
+      { type: 'text', value: 'The catalyst and the reactants are in the same physical phase (e.g., all are liquids or all are gases).' },
+      { type: 'text', value: 'Example: Acid catalysis in organic reactions.' },
+      { type: 'heading', value: 'Heterogeneous Catalysis' },
+      { type: 'text', value: 'The catalyst and the reactants are in different physical phases (e.g., a solid catalyst facilitating a reaction between gases or liquids).' },
+      { type: 'text', value: 'Example: Platinum catalyst in car catalytic converters (solid catalyst, gaseous reactants).' },
+    ],
+  },
+  {
+    title: 'Real-World Applications of Catalysts',
+    subtitle: 'Catalysts in our daily lives',
+    content: [
+      { type: 'heading', value: 'Automobile Catalytic Converters' },
+      { type: 'text', value: 'Convert harmful pollutants from engine exhaust (carbon monoxide, nitrogen oxides, unburned hydrocarbons) into less toxic substances (carbon dioxide, nitrogen, water).' },
+      { type: 'heading', value: 'Industrial Processes' },
+      { type: 'list', items: [
+        'Haber-Bosch Process: Uses an iron catalyst to synthesize ammonia (NH$_3$) from nitrogen and hydrogen, crucial for fertilizers.',
+        'Petroleum Cracking: Zeolite catalysts break down large hydrocarbon molecules into smaller, more valuable ones (e.g., gasoline).',
+        'Production of plastics, fuels, and pharmaceuticals.',
+      ]},
+      { type: 'heading', value: 'Biological Systems (Enzymes)' },
+      { type: 'text', value: 'Enzymes are biological catalysts that accelerate nearly all biochemical reactions in living organisms. Examples include enzymes in digestion (e.g., amylase breaking down starches).' },
+    ],
+  },
+  {
+    title: 'Conclusion',
+    subtitle: 'The unsung heroes of chemistry',
+    content: [
+      { type: 'text', value: 'Reaction rates are fundamental to understanding how chemical processes occur, from the simplest reactions to complex biological pathways.' },
+      { type: 'text', value: 'Factors like temperature, concentration, surface area, and the presence of catalysts significantly influence these rates.' },
+      { type: 'text', value: 'Catalysts, in particular, are indispensable tools that enable efficient and sustainable chemical transformations across various industries and within living systems.' },
+      { type: 'text', value: 'Thank you for your attention!' },
+      { type: 'text', value: 'Questions?' },
+    ],
+  },
+];
+
+function App() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Function to navigate to the next slide
+  const goToNextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  // Function to navigate to the previous slide
+  const goToPreviousSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowRight') {
+        goToNextSlide();
+      } else if (event.key === 'ArrowLeft') {
+        goToPreviousSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentSlide]); // Re-run effect if currentSlide changes to ensure correct navigation
+
+  const SlideContent = ({ content }) => {
+    return (
+      <div className="text-gray-800 text-lg leading-relaxed">
+        {content.map((item, index) => {
+          if (item.type === 'heading') {
+            return <h3 key={index} className="text-2xl font-semibold mt-6 mb-3 text-blue-700">{item.value}</h3>;
+          } else if (item.type === 'text') {
+            return <p key={index} className="mb-2">{item.value}</p>;
+          } else if (item.type === 'list') {
+            return (
+              <ul key={index} className="list-disc list-inside ml-4 mb-2">
+                {item.items.map((listItem, liIndex) => (
+                  <li key={liIndex} className="mb-1">{listItem}</li>
+                ))}
+              </ul>
+            );
+          }
+          return null;
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-4 font-sans antialiased">
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+      <style>
+        {`
+        body {
+          font-family: 'Inter', sans-serif;
+        }
+        .slide-container {
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+          min-height: 500px; /* Ensure a minimum height for slides */
+        }
+        /* Custom styles for buttons */
+        .nav-button {
+          @apply px-6 py-3 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300;
+        }
+        .nav-button:disabled {
+          @apply bg-gray-400 cursor-not-allowed shadow-none transform-none;
+        }
+        `}
+      </style>
+
+      <div className="slide-container bg-white rounded-xl p-8 w-full max-w-4xl flex flex-col justify-between">
+        <div>
+          <h1 className="text-4xl font-extrabold text-blue-800 mb-4 text-center">
+            {slides[currentSlide].title}
+          </h1>
+          <h2 className="text-xl text-gray-600 mb-8 text-center">
+            {slides[currentSlide].subtitle}
+          </h2>
+          <SlideContent content={slides[currentSlide].content} />
+        </div>
+
+        <div className="flex justify-between items-center mt-8 pt-4 border-t border-gray-200">
+          <button
+            onClick={goToPreviousSlide}
+            disabled={currentSlide === 0}
+            className="nav-button"
+          >
+            Previous
+          </button>
+          <span className="text-gray-600 text-sm">
+            Slide {currentSlide + 1} of {slides.length}
+          </span>
+          <button
+            onClick={goToNextSlide}
+            disabled={currentSlide === slides.length - 1}
+            className="nav-button"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
